@@ -53,6 +53,8 @@ class DockTest < Minitest::Test
     @dock.rent(@kayak_1, @patrick)
     @dock.rent(@kayak_2, @patrick)
     @dock.rent(@sup_1, @eugene)
+    # do these ^ two need to be included in this test?
+    # they're part of the interaction pattern but aren't actually relevant to testing this assertion
 
     # two hours of rental time are added to one of patrick's rentals
     @kayak_1.add_hour
@@ -66,16 +68,24 @@ class DockTest < Minitest::Test
       # up to dock's max rental time
 
     assert_equal kayak_1_charge, @dock.charge(@kayak_1)
+  end
 
-    # @sup_1.add_hour
-    # @sup_1.add_hour
-    # @sup_1.add_hour
-    # @sup_1.add_hour
-    # @sup_1.add_hour
-    #
-    # sup_1_charge = {:card_number => "1313131313131313",
-    #                   :amount => 45}
-    #
-    # assert_equal sup_1_charge, @dock.charge(@sup_1)
+  def test_it_doesnt_charge_for_more_hours_than_max_rental_time
+    @dock.rent(@kayak_1, @patrick)
+    @dock.rent(@kayak_2, @patrick)
+    # do these ^ two need to be included in this test?
+    # they're part of the interaction pattern but aren't actually relevant to testing this assertion
+    @dock.rent(@sup_1, @eugene)
+
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+    @sup_1.add_hour
+
+    sup_1_charge = {:card_number => "1313131313131313",
+                      :amount => 45}
+
+    assert_equal sup_1_charge, @dock.charge(@sup_1)
   end
 end

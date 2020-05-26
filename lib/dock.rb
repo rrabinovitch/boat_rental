@@ -13,15 +13,15 @@ class Dock
 
   def charge(boat)
     charge = {}
+    charge[:card_number] = @rental_log[boat].credit_card_number
 
     if boat.hours_rented <= @max_rental_time
-      charge[:card_number] = @rental_log[boat].credit_card_number
       charge[:amount] = (boat.price_per_hour * boat.hours_rented)
       charge
     else
-      ###
-      require "pry"; binding.pry
+      charge[:amount] = (boat.price_per_hour * @max_rental_time)
+      charge
     end
-
+    # is there a way to make this method more concise?
   end
 end
