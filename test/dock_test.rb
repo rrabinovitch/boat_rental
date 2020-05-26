@@ -29,12 +29,14 @@ class DockTest < Minitest::Test
     assert_empty @dock.rental_log
   end
 
-  def test_it_can_rent_boat # rent - this method takes a Boat and a Renter as arguments. Calling this method signifies that the Boat has been rented by the Renter.
+  def test_it_can_rent_boat
+    # rent - this method takes a Boat and a Renter as arguments. Calling this method signifies that the Boat has been rented by the Renter.
     # how to test that method worked in its own test?
+    # => maybe assert @dock.rent(@kayak_1, @patrick) just to confirm it works? but that seems redundant if in the next test we've confirmed that it works
     # or is only way to test rental log like below?
   end
 
-  def test_it_can_list_rental_log # rental_log - this method returns a hash that associates a Boat with the Renter that rented it.
+  def test_it_can_list_rental_log
     @dock.rent(@kayak_1, @patrick)
     @dock.rent(@kayak_2, @patrick)
     @dock.rent(@sup_1, @eugene)
@@ -44,5 +46,16 @@ class DockTest < Minitest::Test
                           @sup_1 => @eugene}
 
     assert_equal expected_rental_log, @dock.rental_log
+  end
+
+  def test_it_can_charge_for_rentals
+    @dock.rent(@kayak_1, @patrick)
+    @dock.rent(@kayak_2, @patrick)
+    @dock.rent(@sup_1, @eugene)
+
+    expected_rental_log = {@kayak_1 => @patrick,
+                          @kayak_2 => @patrick,
+                          @sup_1 => @eugene}
+
   end
 end
