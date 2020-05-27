@@ -1,10 +1,11 @@
 class Dock
-  attr_reader :name, :max_rental_time, :rental_log
+  attr_reader :name, :max_rental_time, :rental_log, :revenue
 
   def initialize(name, max_rental_time)
     @name = name
     @max_rental_time = max_rental_time
     @rental_log = {}
+    @revenue = 0
   end
 
   def rent(boat, renter)
@@ -17,11 +18,20 @@ class Dock
 
     if boat.hours_rented <= @max_rental_time
       charge[:amount] = (boat.price_per_hour * boat.hours_rented)
-      charge
-    else
+    elsif boat.hours_rented > @max_rental_time
       charge[:amount] = (boat.price_per_hour * @max_rental_time)
-      charge
     end
-    # is there a way to make this method more concise?
+
+    charge
+  end
+
+  def log_hour
+    @rental_log.each_key do |boat|
+      boat.add_hour
+    end
+  end
+
+  def return(boat)
+    @revenue += charge(boat)[:amount]
   end
 end
